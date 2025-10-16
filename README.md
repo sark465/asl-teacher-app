@@ -1,2 +1,23 @@
-# asl-teacher-app
-Build an interactive web application that teaches American Sign Language (ASL) using  computer vision and real-time feedback. The application will use the user's camera to detect  hand gestures, provide instructional guidance, evaluate performance, and track learning  progress.
+# ASL Teacher App
+
+## Overview
+Web app to learn ASL with camera-based real-time feedback, scoring, and analytics.
+
+## Quick start (local dev)
+
+### Prereqs
+- Docker & Docker Compose
+- Node.js (optional if running frontend locally)
+- Python 3.11 (optional if running backend locally)
+
+### Start with Docker (recommended)
+From project root:
+```bash
+docker-compose up --build
+
+
+Frontend: http://localhost:4173
+
+Backend: http://localhost:8000
+
+Postgres: localhost:5432
