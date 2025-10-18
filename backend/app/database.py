@@ -1,13 +1,39 @@
-from sqlmodel import SQLModel, create_engine, Session
 import os
+import asyncio
+from sqlalchemy.ext.asyncio import AsyncSession, create_async_engine
+from sqlalchemy.orm import sessionmaker, declarative_base
 
-DATABASE_URL = os.getenv("DATABASE_URL", "postgresql://user:password@db:5432/asl_db")
+# Database URL
+DATABASE_URL = os.getenv(
+    "DATABASE_URL",
+    "postgresql+asyncpg://postgres:123456@localhost:5432/asl_db"
+)
 
-engine = create_engine(DATABASE_URL, echo=False)
+# Async engine
+engine = create_async_engine(DATABASE_URL, echo=True)
 
-def init_db():
-    SQLModel.metadata.create_all(engine)
+# Async session factory
+AsyncSessionLocal = sessionmaker(
+    bind=engine,
+    class_=AsyncSession,
+    expire_on_commit=False
+)
 
-def get_session():
-    with Session(engine) as session:
+# Base class for models
+Base = declarative_base()
+
+# Dependency for FastAPI
+async def get_session() -> AsyncSession:
+    async with AsyncSessionLocal() as session:
         yield session
+
+# Function to create tables
+async def init_db():
+    async with engine.begin() as conn:
+        # Import all models here
+        from . import models
+        await conn.run_sync(Base.metadata.create_all)
+
+# Optional: run directly
+if __name__ == "__main__":
+    asyncio.run(init_db())

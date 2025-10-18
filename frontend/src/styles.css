@@ -1,0 +1,148 @@
+/* styles.css */
+
+body, html, #root {
+  margin: 0;
+  padding: 0;
+  height: 100%;
+  font-family: Arial, sans-serif;
+}
+
+.app {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  background: linear-gradient(135deg, #a18cd1, #fbc2eb, #fad0c4);
+}
+
+header {
+  background: white;
+  padding: 20px;
+  text-align: center;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.2);
+  position: relative; /* needed for buttons positioning */
+}
+
+header h1 {
+  margin: 0;
+  font-size: 2.5rem;
+  color: #333;
+}
+
+nav {
+  margin-top: 10px;
+}
+
+nav button {
+  margin: 0 5px;
+  padding: 10px 20px;
+  border: none;
+  border-radius: 8px;
+  font-weight: bold;
+  cursor: pointer;
+  color: white;
+  background-color: #6c63ff;
+  transition: background 0.3s, transform 0.2s;
+}
+
+nav button:hover {
+  background-color: #574fd1;
+  transform: scale(1.05);
+}
+
+main {
+  flex: 1;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.landing-box {
+  background: rgba(255, 255, 255, 0.85);
+  padding: 40px 60px;
+  border-radius: 20px;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.3);
+  text-align: center;
+}
+
+.landing-box h2 {
+  font-size: 1.8rem;
+  margin-bottom: 30px;
+  color: #333;
+}
+
+/* Start Learning button styled like nav buttons */
+.landing-box button {
+  padding: 10px 20px;
+  border: none;
+  border-radius: 8px;
+  font-weight: bold;
+  cursor: pointer;
+  color: white;
+  background-color: #6c63ff;
+  transition: background 0.3s, transform 0.2s;
+}
+
+.landing-box button:hover {
+  background-color: #574fd1;
+  transform: scale(1.05);
+}
+
+/* Back button styling */
+.back-button {
+  position: absolute;
+  top: 20px;
+  right: 10px; /* shifted left to make space for Download button */
+  padding: 8px 15px;
+  background-color: hsl(348, 100%, 70%);
+  color: white;
+  border: none;
+  border-radius: 8px;
+  font-weight: bold;
+  cursor: pointer;
+  transition: background 0.3s, transform 0.2s;
+}
+
+.back-button:hover {
+  background-color: #e8436f;
+  transform: scale(1.05);
+}
+
+/* Download button styling */
+.download-button {
+  position: absolute;
+  top: 20px;
+  right: 120px; /* in front of back button */
+  padding: 8px 15px;
+  background-color: #28a745; /* stylish green */
+  color: white;
+  border: none;
+  border-radius: 8px;
+  font-weight: bold;
+  cursor: pointer;
+  transition: background 0.3s, transform 0.2s;
+}
+
+.download-button:hover {
+  background-color: #218838; /* darker green on hover */
+  transform: scale(1.05);
+}
+
+/* Upload button styling */
+.upload-button {
+  position: absolute;
+  top: 20px;
+  right: 300px; /* space next to Download and Back buttons */
+  padding: 8px 15px;
+  background-color: #007bff; /* stylish blue */
+  color: white;
+  border: none;
+  border-radius: 8px;
+  font-weight: bold;
+  cursor: pointer;
+  transition: background 0.3s, transform 0.2s;
+}
+
+.upload-button:hover {
+  background-color: #0056b3; /* darker blue on hover */
+  transform: scale(1.05);
+}

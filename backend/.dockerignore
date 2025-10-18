@@ -1,7 +1,8 @@
 __pycache__
 *.pyc
-*.pyo
-*.pyd
-env
-venv
-.git
+.env
+venv/
+*.sqlite3
+*.egg-info
+dist
+build
