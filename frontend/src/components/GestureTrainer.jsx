@@ -1,51 +1,36 @@
-import { useState } from "react";
+import React, { useRef, useEffect } from "react";
+import * as mpHands from "@mediapipe/hands";
+import { Camera } from "@mediapipe/camera_utils";
 
-const SIGNS = [
-  { name: "Hello", description: "Wave hand near forehead outward" },
-  { name: "Thank You", description: "Touch chin and move forward" },
-];
+const GestureTrainer = ({ onGestureDetected }) => {
+  const videoRef = useRef(null);
 
-export default function GestureTrainer() {
-  const [results, setResults] = useState([]);
+  useEffect(() => {
+    const hands = new mpHands.Hands({
+      locateFile: (file) => `https://cdn.jsdelivr.net/npm/@mediapipe/hands/${file}`,
+    });
 
-  const handleSaveResult = (signName, description) => {
-    const newResult = {
-      id: results.length + 1,
-      sign: signName,
-      description,
-      timestamp: new Date().toLocaleString(),
-    };
-    setResults([...results, newResult]);
-  };
+    hands.setOptions({
+      maxNumHands: 1,
+      minDetectionConfidence: 0.7,
+      minTrackingConfidence: 0.7,
+    });
 
-  return (
-    <div>
-      <h2>ASL Teacher - Test</h2>
+    hands.onResults((results) => {
+      if (results.multiHandLandmarks) {
+        onGestureDetected(results.multiHandLandmarks[0]);
+      }
+    });
 
-      {SIGNS.map((sign) => (
-        <div key={sign.name}>
-          <h3>{sign.name}</h3>
-          <p>{sign.description}</p>
-          <button onClick={() => handleSaveResult(sign.name, sign.description)}>
-            Record Test
-          </button>
-        </div>
-      ))}
+    const camera = new Camera(videoRef.current, {
+      onFrame: async () => await hands.send({ image: videoRef.current }),
+      width: 640,
+      height: 480,
+    });
+    camera.start();
+  }, []);
 
-      <div>
-        <h3>Results:</h3>
-        {results.length === 0 ? (
-          <p>No results yet.</p>
-        ) : (
-          <ul>
-            {results.map((res) => (
-              <li key={res.id}>
-                {res.sign}: {res.description} (Recorded at {res.timestamp})
-              </li>
-            ))}
-          </ul>
-        )}
-      </div>
-    </div>
-  );
-}
+  return <video ref={videoRef} width="640" height="480" />;
+};
+
+export default GestureTrainer;

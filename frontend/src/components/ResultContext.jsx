@@ -3,14 +3,14 @@ import React, { createContext, useContext, useState } from "react";
 const ResultContext = createContext();
 
 export const ResultProvider = ({ children }) => {
-  const [results, setResults] = useState([]);
+  const [results, setResults] = useState(null);
 
-  const addResult = (result) => {
-    setResults((prev) => [...prev, result]);
+  const saveResults = (data) => {
+    setResults(data);
   };
 
   return (
-    <ResultContext.Provider value={{ results, addResult }}>
+    <ResultContext.Provider value={{ results, saveResults }}>
       {children}
     </ResultContext.Provider>
   );

@@ -1,14 +1,25 @@
-FROM python:3.11-alpine AS builder
-WORKDIR /install
-RUN apk add --no-cache build-base postgresql-dev
-COPY app/requirements.txt .
-RUN pip wheel --no-cache-dir -r requirements.txt -w /wheels
+# Stage 1: Build
+FROM node:22-alpine AS build
 
-FROM python:3.11-alpine
 WORKDIR /app
-RUN apk add --no-cache libpq
-COPY --from=builder /wheels /wheels
-RUN pip install --no-cache /wheels/*.whl
-COPY app /app
-EXPOSE 8000
-CMD ["uvicorn", "main:app", "--host", "0.0.0.0", "--port", "8000"]
+COPY package*.json ./
+RUN npm install
+COPY . .
+
+# Stage 2: Run
+FROM node:22-alpine
+
+WORKDIR /app
+COPY --from=build /app .
+
+# Environment variables (can also use .env file)
+ENV PORT=5000
+ENV PGUSER=postgres
+ENV PGPASSWORD=your_password
+ENV PGHOST=db
+ENV PGDATABASE=asl1_db
+ENV PGPORT=5432
+
+EXPOSE 5000
+
+CMD ["node", "server.js"]

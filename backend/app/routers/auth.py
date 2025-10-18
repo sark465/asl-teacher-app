@@ -3,6 +3,8 @@ from sqlmodel import Session
 from ..database import get_session
 from .. import crud, schemas
 
+
+
 router = APIRouter(prefix="/auth", tags=["auth"])
 
 @router.post("/register", response_model=schemas.UserRead)
