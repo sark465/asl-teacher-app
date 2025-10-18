@@ -1,34 +1,20 @@
 services:
-  backend:
-    build: ./backend
-    ports:
-      - "5000:5000"
-    environment:
-      - PGUSER=postgres
-      - PGPASSWORD=your_password
-      - PGDATABASE=asl1_db
-      - PGHOST=db
-    depends_on:
-      - db
-
-  frontend:
-    build: ./frontend
-    ports:
-      - "3000:80"
-    depends_on:
-      - backend
-
   db:
     image: postgres:15
-    restart: always
     environment:
       POSTGRES_USER: postgres
-      POSTGRES_PASSWORD: your_password
+      POSTGRES_PASSWORD: 123456
       POSTGRES_DB: asl1_db
     ports:
       - "5432:5432"
-    volumes:
-      - pgdata:/var/lib/postgresql/data
 
-volumes:
-  pgdata:
+  backend:
+    build: .
+    environment:
+      PGHOST: db
+      PGUSER: postgres
+      PGPASSWORD: 123456
+      PGDATABASE: asl1_db
+      PGPORT: 5432
+    depends_on:
+      - db
