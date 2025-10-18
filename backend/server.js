@@ -1,27 +1,37 @@
-// server.js
 import express from "express";
 import cors from "cors";
 import { Pool } from "pg";
+import path from "path";
+import { fileURLToPath } from "url";
 
 const app = express();
-const port = 5000;
+const port = process.env.PORT || 5000;
 
-// PostgreSQL pool setup
+// =======================
+// PostgreSQL Configuration
+// =======================
 const pool = new Pool({
-  user: "postgres",       // your PostgreSQL username
-  host: "localhost",
-  database: "asl1_db",    // database you created
-  password: "123456", // PostgreSQL password
-  port: 5432,
+  user: process.env.PGUSER || "postgres",
+  host: process.env.PGHOST || "localhost",
+  database: process.env.PGDATABASE || "asl1_db",
+  password: process.env.PGPASSWORD || "123456",
+  port: process.env.PGPORT || 5432,
 });
 
+
+// =======================
 // Middleware
+// =======================
 app.use(cors());
 app.use(express.json());
 
+// =======================
+// API Routes
+// =======================
+
 // Test server
-app.get("/", (req, res) => {
-  res.send("Backend server is running!");
+app.get("/api", (req, res) => {
+  res.send("Backend API is running!");
 });
 
 // Upload results route
@@ -53,12 +63,28 @@ app.post("/api/results", async (req, res) => {
 
     res.status(200).json({ message: "Results uploaded successfully" });
   } catch (err) {
-    console.error("Error inserting into DB:", err);
+    console.error("❌ Error inserting into DB:", err);
     res.status(500).json({ message: "Failed to upload results", error: err.message });
   }
 });
 
-// Start server
+// =======================
+// Serve Frontend (Production)
+// =======================
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
+
+// Serve frontend
+app.use(express.static(path.join(__dirname, "public")));
+
+// Fix for Node 22 / Express 5
+app.get(/.*/, (req, res) => {
+  res.sendFile(path.join(__dirname, "public", "index.html"));
+});
+
+// =======================
+// Start Server
+// =======================
 app.listen(port, () => {
-  console.log(`Server running at http://localhost:${port}`);
+  console.log(`🚀 Server running on port ${port}`);
 });
