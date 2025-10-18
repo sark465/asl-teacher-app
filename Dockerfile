@@ -30,10 +30,9 @@ COPY --from=frontend-build /frontend/dist ./public
 # =========================
 # Environment Config
 # =========================
-ENV PORT=5000
 ENV PGUSER=postgres
-ENV PGPASSWORD=your_password
-ENV PGHOST=your_db_host
+ENV PGPASSWORD=123456
+ENV PGHOST=host.docker.internal
 ENV PGDATABASE=asl1_db
 ENV PGPORT=5432
 
