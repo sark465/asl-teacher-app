@@ -12,7 +12,7 @@ const port = process.env.PORT || 5000;
 // =======================
 const pool = new Pool({
   user: process.env.PGUSER || "postgres",
-  host: process.env.PGHOST || "localhost",
+  host: process.env.PGHOST || "host.docker.internal",
   database: process.env.PGDATABASE || "asl1_db",
   password: process.env.PGPASSWORD || "123456",
   port: process.env.PGPORT || 5432,
